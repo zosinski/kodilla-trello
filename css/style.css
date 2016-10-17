@@ -1,0 +1,72 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: black;
+	padding: 1rem;
+	margin: 0;
+}
+
+.board, .column, .pseudo-column, .card, .pseudo-card, .card-placeholder {
+	border-radius: 10px;
+	padding: 1rem;
+	position: relative;
+}
+.board {
+	margin: 1rem auto;
+	background-color: grey;
+}
+.column, .pseudo-column {
+	background-color: white;
+	min-width: 300px;
+	width: 300px;
+	margin-right: 0.5rem;
+	height: 100%;
+}
+.pseudo-column {
+	background-color: #ccc;
+}
+.board-column-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	overflow: auto;
+	padding: 0 0 15px;
+	list-style-type: none;
+}
+.card, .card-placeholder, .pseudo-card {
+	border: 1px solid black;
+	width: 100%;
+	margin-top: 10px;
+	background-color: white;
+}
+.card:hover {
+	border: 2px solid black;
+	cursor: pointer;
+}
+.card-placeholder {
+	background-color: red;
+	height: 100px;
+}
+.column-card-list {
+	list-style-type: none;
+	padding: 0;	
+}
+.btn {
+	cursor: pointer;
+}
+.nav-column {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+}
+
+.card > .btn-delete {
+	right: 0.5rem;
+	top: 0.5rem;
+}
+[class*=' btn-add'] {
+	background-color: green;
+	color: white;
+}
