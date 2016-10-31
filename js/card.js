@@ -18,9 +18,8 @@ function Card(id, description) {
 			self.removeCard();
 		});
 		$btnCardEdit.click(function(){
-			editCard(self, updateCard)
 			self.editCard();
-		})
+		});
 
 		$card.append($btnCardEdit)
 			.append($btnCardDelete)
@@ -55,7 +54,7 @@ Card.prototype = {
 			},
 			success: function() {
 				self.$cardDescription.text(cardNewDescription);
-				//tutaj schowanie textarea i pokazanie
+				//tutaj schowanie textarea i pokazanie description
 				alert(cardNewDescription);
 
 			},
@@ -73,7 +72,7 @@ function modalEditCard(cardObj) {
 	var $textareaEditCard = $('<textarea>').addClass('textarea-add-card')
 		.attr('rows', 2)
 		.attr('wrap', 'soft');
-	var $textareaEditCard.text() = 'ddddd';
+	$textareaEditCard.text(cardObj.description);
 	var $btnSaveCard = $('<button>').addClass('btn btn-add-card').text(' + ');
 
 	$btnSaveCard.click(function() {
