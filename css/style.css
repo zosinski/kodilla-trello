@@ -109,7 +109,8 @@ header {
 	top: 1rem;
 }
 
-.card > .btn-delete {
+.card > .btn-delete,
+.card > .btn-edit {
 	position: absolute;
 	right: 0.5rem;
 	top: 0.5rem;

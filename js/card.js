@@ -18,6 +18,7 @@ function Card(id, description) {
 			self.removeCard();
 		});
 		$btnCardEdit.click(function(){
+			editCard(self, updateCard)
 			self.editCard();
 		})
 
@@ -42,25 +43,26 @@ Card.prototype = {
 			}
 		});
 	},
-	editCard: function() {
+	editCard: function(cardNewDescription) {
 		var self = this;
-		var updatedDescription = modalEditCard(this);
 		$.ajax({
 			url: baseUrl + '/card/' + self.id,
 			method: 'PUT',
 			data: {
 				id: self.id,
-				name: updatedDescription,
+				name: cardNewDescription,
 				bootcamp_kanban_column_id: self.bootcamp_kanban_column_id
 			},
 			success: function() {
-				self.$cardDescription = updatedDescription;
-				alert(self.description);
+				self.$cardDescription.text(cardNewDescription);
+				//tutaj schowanie textarea i pokazanie
+				alert(cardNewDescription);
+
 			},
 			error: function(response) {
 				//tymczasowa obsługa mimo błędu 500 serwera, żeby sprawdzić działania frontendu
-				self.$cardDescription = updatedDescription;
-				alert(self.description);	
+				self.$cardDescription.text(cardNewDescription);
+				alert(cardNewDescription);
 			}
 		});
 	}
