@@ -8,20 +8,26 @@ $.ajaxSetup({
 	headers: myHeaders
 });
 
-$(function(){
-
-	// ----- TOOLS
-	function randomString() {
-		var chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
-		var str = '';
-		var i = 0;
-		for (i = 0; i < 10; i++) {
-			str += chars[Math.floor(Math.random() * chars.length)];
-		};
-		return str;
+// ----- TOOLS
+function randomString() {
+	var chars = '0123456789abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXTZ';
+	var str = '';
+	var i = 0;
+	for (i = 0; i < 10; i++) {
+		str += chars[Math.floor(Math.random() * chars.length)];
 	};
+	return str;
+};
+
+function showAlert(message, type, timeout) {
+	var alert = $('p').css('display','none').addClass('alert ' + type).text(message);
+	$('body').append(alert);
+	alert.show('fast');
+	setTimeout( function() {alert.hide('slow')}, timeout );
+}
 
 
+$(function(){
 
 	// DASHBOARD 
 
@@ -29,6 +35,7 @@ $(function(){
 
 	function initialize() {
 		var dashboard = $('section.main');
+		var header = $('header');
 		var inputAddBoard = $('<input>').addClass('add-board').attr('placeholder', 'Dodaj tablicę...');
 		var btnAddBoard = $('<button>').addClass('btn btn-add-board').text(' + ');
 
@@ -81,13 +88,12 @@ $(function(){
 
 		function setupCards(column, cards){ // ustawia kolumny na podstawie request do API
 			cards.forEach(function(item) {
-				console.log(item);
 				var card = new Card(item.id, item.name);
 				column.addCard(card);
 			});
 		};
 
-		dashboard.append(inputAddBoard).append(btnAddBoard);
+		header.append(inputAddBoard).append(btnAddBoard);
 		inputAddBoard.focus();
 	}
 

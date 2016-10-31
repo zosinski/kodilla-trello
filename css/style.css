@@ -1,57 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,400i,700');
+
 * {
 	box-sizing: border-box;
 }
 
 body {
-	background-color: black;
-	padding: 1rem;
+	background-color: #2c3e50;
 	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8rem;
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Lato', sans-serif;
+}
+
+h1 {
+	color: #f1c40f;
+}
+h2 {
+	color: #2c3e50;
+}
+
+header {
+	height: 50px;
+	padding: 1rem;
+	height: 100%;
+	display: flex;
 }
 
 .board, .column, .pseudo-column, .card, .pseudo-card, .card-placeholder {
-	border-radius: 10px;
+	border-radius: 5px;
 	padding: 1rem;
 	position: relative;
 }
 .board {
-	margin: 1rem auto;
-	background-color: grey;
+	margin: 0 auto 20px;
+	background-color: #34495e;
+	height: calc(100vh - 1rem - 50px);
+	overflow-x: auto;
 }
 .column, .pseudo-column {
 	background-color: white;
 	min-width: 300px;
 	width: 300px;
-	margin-right: 0.5rem;
-	height: 100%;
 }
 .pseudo-column {
 	background-color: #ccc;
+	height: 80px;
+}
+.column {
+	height: 100%;
+	overflow-y: hidden;
+	overflow-x: visible;
+	margin-right: 0.5rem;
+	background-color: #ecf0f1;
 }
 .board-column-list {
 	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	overflow: auto;
+	/*flex-direction: row;*/
+	/*flex-wrap: nowrap;*/
+	overflow-x: visible;
 	padding: 0 0 15px;
 	list-style-type: none;
+	max-height: 93%;
 }
 .card, .card-placeholder, .pseudo-card {
-	border: 1px solid black;
-	width: 100%;
+}
+.pseudo-card {
+	display: flex;
+	padding: 0;
+}
+.card {
 	margin-top: 10px;
-	background-color: white;
+	z-index: 10;
+	width: 100%;
+	background-color: #bdc3c7;
 }
 .card:hover {
-	border: 2px solid black;
+	border: 1px solid #7f8c8d;
 	cursor: pointer;
 }
 .card-placeholder {
-	background-color: red;
-	height: 100px;
+	margin-top: 10px;
+	background-color: #7f8c8d;
+	height: 50px;
+}
+.card-description {
+	word-wrap: break-word;
+	max-height: 50px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .column-card-list {
 	list-style-type: none;
-	padding: 0;	
+	padding: 0;
+	overflow-y: auto;
+	overflow-x: visible;
+	max-height: 73%;
+	min-height: 15px;	
 }
 .btn {
 	cursor: pointer;
@@ -63,10 +110,49 @@ body {
 }
 
 .card > .btn-delete {
+	position: absolute;
 	right: 0.5rem;
 	top: 0.5rem;
 }
 [class*=' btn-add'] {
-	background-color: green;
+	background-color: #f39c12;
 	color: white;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+.btn-add-card {
+	display: none;
+}
+
+.alert {
+	position: absolute;
+	top: 1rem;
+	left: 20%;
+	text-align: center;
+	z-index: 99;
+	padding: 15px 20px;
+	border-radius: 5px;
+}
+.danger {
+	background-color: red;
+	color: white;
+}
+
+.id {
+	display: none;
+}
+
+input.add-board, input.add-column, .textarea-add-card {
+	line-height: 1.5rem;
+	border-radius: 2px;
+	box-shadow: 2px 2px #7f8c8d;
+	padding: 5px 10px;
+	font-family: 'Open Sans', sans-serif;
+}
+input {
+	margin-right: 2px;
+}
+.textarea-add-card {
+	resize: none;
+	width: 100%;
 }

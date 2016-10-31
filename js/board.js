@@ -8,7 +8,7 @@ function Board(id, name) {
 	this.$element = createBoard();
 
 	function createBoard() {
-		var	$board = $('<div>').addClass('board');
+		var	$board = $('<div>').addClass('board').attr('id',id);
 		var $boardTitle = $('<h1>').addClass('board-title').text(self.name);
 		var $boardColumnList = $('<ul>').addClass('board-column-list');
 		var $pseudoColumn = $('<li>').addClass('pseudo-column');
@@ -62,17 +62,12 @@ function initSortable() {
 	$('.column-card-list').sortable({
 		connectWith: '.column-card-list',
 		placeholder: 'card-placeholder',
+		dropOnEmpty: true,
 		receive: function(event, ui) {
-			console.log(ui.item);
-			console.log(event.target);
-			var cardId = ui.item.children('div.id').text();
+			var cardId = ui.item.attr('id');
 			var targetColumn = $(event.target).parent();
-			console.log(targetColumn);
-			var targetColumnId = targetColumn.children('div.id').text();
-			console.log(cardId);
-			console.log(targetColumnId);	
-
-
+			var targetColumnId = targetColumn.attr('id');
+			
 			$.ajax({
 				url: baseUrl + '/card/' + cardId,
 				method: 'PUT',
