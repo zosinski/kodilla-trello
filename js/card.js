@@ -8,11 +8,13 @@ function Card(id, description, parentColumnId) {
 	this.parentColumnId = parentColumnId;
 	this.$element = createCard();
 	function createCard() {
-		var $card = $('<li>').addClass('card').attr('id',self.id);
+		var $card = $('<li>').addClass('well card').attr('id',self.id);
 		var $cardId = $('<div>').addClass('id').text(self.id);
 		var $cardDescription = $('<p>').addClass('card-description').text(self.description);
-		var $btnCardEdit = $('<button>').addClass('btn btn-edit').text('edit');
-		var $btnCardDelete = $('<button>').addClass('btn btn-delete').text('x');
+		var $btnCardEdit = $('<a>').addClass('btn btn-xs btn-primary btn-edit')
+			.append($('<i>').addClass('material-icons md-18').text('edit'));
+		var $btnCardDelete = $('<a>').addClass('btn btn-xs btn-delete')
+			.append($('<i>').addClass('material-icons md-18').text('delete'));
 
 		$btnCardDelete.click(function(){
 			self.removeCard();
@@ -76,7 +78,7 @@ Card.prototype = {
 		var $modalCard = $('<div>').addClass('modal-card'); 
 		var $textareaEditCard = $('<textarea>').addClass('textarea-edit-card').attr('wrap', 'soft');
 		$textareaEditCard.text(self.description);
-		var $btnSaveCard = $('<button>').addClass('btn btn-save-card').text(' Zapisz ');
+		var $btnSaveCard = $('<button>').addClass('btn btn-primary btn-save-card').text(' Zapisz ');
 		var $btnCancel = $('<button>').addClass('btn btn-cancel').text(' Anuluj ');
 
 		$btnSaveCard.click(function() {

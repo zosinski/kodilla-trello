@@ -8,7 +8,8 @@ function Column(id, name, backgroundColor) {
 	this.backgroundColor = backgroundColor || 'white';
 	this.$element = createColumn();
 	function createColumn() {
-		const $column = $('<li>').addClass('column').attr('id', id);
+		const $column = $('<li>').addClass('panel panel-default column').attr('id', id);
+		const $columnBody = $('<div>').addClass('panel-body');
 		const $columnTitle = $('<h2>').addClass('column-title').text(name);
 		const $columnId = $('<div>').addClass('id').text(id);
 		const $columnCardList = $('<ul>').addClass('column-card-list');
@@ -65,7 +66,9 @@ function Column(id, name, backgroundColor) {
 		// $columnNav.append($columnColorPicker).append($btnColumnDelete);
 		$columnNav.append($btnColumnDelete);
 		$pseudoCard.append($textareaAddCard).append($btnAddCard);
-		$column.append($columnTitle)
+		$column.append($columnBody);
+		$columnBody
+			.append($columnTitle)
 			.append($columnId)
 			.append($columnNav)
 			.append($pseudoCard)
@@ -77,7 +80,7 @@ function Column(id, name, backgroundColor) {
 
 Column.prototype = { 
 	addCard: function(card) {
-		this.$element.children('ul').append(card.$element);
+		this.$element.find('.column-card-list').append(card.$element);
 	},
 	
 	removeColumn: function() {

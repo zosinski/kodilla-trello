@@ -65,7 +65,7 @@ function initSortable() {
 		dropOnEmpty: true,
 		receive: (event, ui) => {
 			const cardId = ui.item.attr('id');
-			const targetColumn = $(event.target).parent();
+			const targetColumn = $(event.target).closest('.column');
 			const targetColumnId = targetColumn.attr('id');
 			
 			$.ajax({
@@ -73,7 +73,7 @@ function initSortable() {
 				method: 'PUT',
 				data: {
 					id: cardId,
-					name: ui.item.children('p.card-description').text(),
+					name: ui.item.find('p.card-description').text(),
 					bootcamp_kanban_column_id: targetColumnId
 				}
 			});
