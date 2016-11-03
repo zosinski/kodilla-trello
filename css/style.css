@@ -23,22 +23,26 @@ h2 {
 }
 
 header {
-	height: 50px;
-	padding: 1rem;
-	height: 100%;
-	display: flex;
+	height: 70px;
+	padding: 16px;
+	background-color: #34495e;
 }
 
 .board, .column, .pseudo-column, .card, .pseudo-card, .card-placeholder {
 	border-radius: 5px;
-	padding: 1rem;
+	padding: 16px;
 	position: relative;
 }
 .board {
-	margin: 0 auto 20px;
-	background-color: #34495e;
-	height: calc(100vh - 1rem - 50px);
-	overflow-x: auto;
+	padding: 16px 16px 0;
+}
+
+.board, .main {
+	margin: 0;
+	max-height: calc(100vh - 90px);
+	height: 100%;
+	display: inline-block;
+	min-width: 100%;
 }
 .column, .pseudo-column {
 	background-color: white;
@@ -51,17 +55,14 @@ header {
 }
 .column {
 	height: 100%;
-	overflow-y: hidden;
-	overflow-x: visible;
-	margin-right: 0.5rem;
+	margin-right: 8px;
 	background-color: #ecf0f1;
 }
 .board-column-list {
 	display: flex;
-	/*flex-direction: row;*/
-	/*flex-wrap: nowrap;*/
-	overflow-x: visible;
-	padding: 0 0 15px;
+	/*flex-direction: row;
+	flex-wrap: nowrap;
+*/	padding: 0;
 	list-style-type: none;
 	max-height: 93%;
 }
@@ -72,7 +73,7 @@ header {
 	padding: 0;
 }
 .card {
-	margin-top: 10px;
+	margin-bottom: 10px;
 	z-index: 10;
 	width: 100%;
 	background-color: #bdc3c7;
@@ -97,8 +98,9 @@ header {
 	padding: 0;
 	overflow-y: auto;
 	overflow-x: visible;
-	max-height: 73%;
-	min-height: 15px;	
+	max-height: calc(100vh - 330px);
+	min-height: 15px;
+	margin-top: 10px;	
 }
 .btn {
 	cursor: pointer;
@@ -111,15 +113,24 @@ header {
 
 .card > .btn-delete,
 .card > .btn-edit {
-	position: absolute;
-	right: 0.5rem;
-	top: 0.5rem;
+	float: right;
+	position: relative;
+	right: -10px;
+	top: -10px;
+	visibility: hidden;
 }
+.card:hover > .btn-delete,
+.card:hover > .btn-edit {
+	visibility: visible;
+}
+
 [class*=' btn-add'] {
 	background-color: #f39c12;
 	color: white;
-	font-size: 1.5rem;
-	line-height: 2rem;
+	font-size: 24px;
+    line-height: 32px;
+    position: relative;
+    top: 4px;
 }
 .btn-add-card {
 	display: none;
@@ -127,7 +138,7 @@ header {
 
 .alert {
 	position: absolute;
-	top: 1rem;
+	top: 16px;
 	left: 20%;
 	text-align: center;
 	z-index: 99;
@@ -135,16 +146,16 @@ header {
 	border-radius: 5px;
 }
 .danger {
-	background-color: red;
-	color: white;
+	background-color: #e74c3c;
+	color: #ecf0f1;
 }
 
 .id {
 	display: none;
 }
 
-input.add-board, input.add-column, .textarea-add-card {
-	line-height: 1.5rem;
+input.add-board, input.input-add-column, .textarea-add-card, .textarea-edit-card {
+	line-height: 24px;
 	border-radius: 2px;
 	box-shadow: 2px 2px #7f8c8d;
 	padding: 5px 10px;
@@ -156,4 +167,44 @@ input {
 .textarea-add-card {
 	resize: none;
 	width: 100%;
+}
+
+/* modal for card editing */
+.modal-container {
+	z-index: 10;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(44, 62, 80, 0.8);
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.modal-card {
+	z-index: 20;
+	max-width: 500px;
+	max-height: 400px;
+	width: 100%;
+	height: 100%;
+	background-color: #ecf0f1;
+	opacity: 1.0;
+	border-radius: 3px;
+	padding: 20px 15px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+}
+.textarea-edit-card {
+	opacity: 1.0;
+	resize: none;
+	width: 100%;
+	height: calc(100% - 50px);
+}
+.btn-save-card,
+.btn-cancel {
+	margin-top: 15px;
+	margin-left: 5px;
+	float: right;
 }

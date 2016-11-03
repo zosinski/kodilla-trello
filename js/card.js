@@ -1,11 +1,11 @@
 // ------ CARD
 
-function Card(id, description) {
+function Card(id, description, parentColumnId) {
 	var self = this;
 
-	// this.id = randomString();
 	this.id = id;
 	this.description = description || '';
+	this.parentColumnId = parentColumnId;
 	this.$element = createCard();
 	function createCard() {
 		var $card = $('<li>').addClass('card').attr('id',self.id);
@@ -18,11 +18,11 @@ function Card(id, description) {
 			self.removeCard();
 		});
 		$btnCardEdit.click(function(){
-			self.editCard();
+			self.editCard();		
 		});
 
-		$card.append($btnCardEdit)
-			.append($btnCardDelete)
+		$card.append($btnCardDelete)
+			.append($btnCardEdit)
 			.append($cardId)
 			.append($cardDescription);
 
@@ -42,69 +42,120 @@ Card.prototype = {
 			}
 		});
 	},
-	editCard: function(cardNewDescription) {
+	
+	updateCard: function(cardNewDescription, callback) {
 		var self = this;
+		var data = {
+			id: self.id,
+			name: cardNewDescription,
+			bootcamp_kanban_column_id: self.parentColumnId
+		};
+		console.log(data);
+
 		$.ajax({
 			url: baseUrl + '/card/' + self.id,
 			method: 'PUT',
-			data: {
-				id: self.id,
-				name: cardNewDescription,
-				bootcamp_kanban_column_id: self.bootcamp_kanban_column_id
-			},
+			data: data,
 			success: function() {
-				self.$cardDescription.text(cardNewDescription);
-				//tutaj schowanie textarea i pokazanie description
-				alert(cardNewDescription);
-
+				self.description = cardNewDescription;
+				self.$element.find('.card-description').text(cardNewDescription);
+				callback();
+				// self.$element.show();
 			},
 			error: function(response) {
-				//tymczasowa obsługa mimo błędu 500 serwera, żeby sprawdzić działania frontendu
-				self.$cardDescription.text(cardNewDescription);
-				alert(cardNewDescription);
+				// self.$cardDescription.text(cardNewDescription);
+				// alert(cardNewDescription);
+			}
+
+		});
+	},
+
+	editCard: function() {
+		var self = this;
+		var $modalCardContainer = $('<div>').addClass('modal-container');
+		var $modalCard = $('<div>').addClass('modal-card'); 
+		var $textareaEditCard = $('<textarea>').addClass('textarea-edit-card').attr('wrap', 'soft');
+		$textareaEditCard.text(self.description);
+		var $btnSaveCard = $('<button>').addClass('btn btn-save-card').text(' Zapisz ');
+		var $btnCancel = $('<button>').addClass('btn btn-cancel').text(' Anuluj ');
+
+		$btnSaveCard.click(function() {
+			var cardNewDescription = $textareaEditCard.val();
+			if (cardNewDescription !== '') {
+				self.updateCard(cardNewDescription, function(){
+					$modalCardContainer.remove()
+				});
+				return true;
+			};
+			showAlert('Podaj treść karty', 'danger', 3000);
+			return false;
+		});
+		$btnCancel.click(function() {
+			$modalCardContainer.remove()
+		});
+
+		$textareaEditCard.on('keydown', function(event) {
+			if (event.keyCode === 13 && !event.shiftKey) {
+				$btnSaveCard.click();
+				event.preventDefault();
 			}
 		});
+		$(document).on('keydown', function(event) {
+			if (event.keyCode === 27) $btnCancel.click();
+		});
+
+		$modalCardContainer.append($modalCard);
+		$modalCard.append($textareaEditCard)
+			.append($btnCancel)
+			.append($btnSaveCard);
+		
+		$('body').append($modalCardContainer);
+		$modalCardContainer.show();
+		$textareaEditCard.focus();
 	}
+
+
 };
 
-function modalEditCard(cardObj) {
-	var $tempCard = $('<li>').addClass('pseudo-card');
-	var $textareaEditCard = $('<textarea>').addClass('textarea-add-card')
-		.attr('rows', 2)
-		.attr('wrap', 'soft');
-	$textareaEditCard.text(cardObj.description);
-	var $btnSaveCard = $('<button>').addClass('btn btn-add-card').text(' + ');
+// function editCard(cardObj) {
+// 	var $modalCardContainer = $('<div>').addClass('modal-container');
+// 	var $modalCard = $('<div>').addClass('modal-card'); 
+// 	var $textareaEditCard = $('<textarea>').addClass('textarea-edit-card').attr('wrap', 'soft');
+// 	$textareaEditCard.text(cardObj.description);
+// 	var $btnSaveCard = $('<button>').addClass('btn btn-save-card').text(' Zapisz ');
+// 	var $btnCancel = $('<button>').addClass('btn btn-cancel').text(' Anuluj ');
 
-	$btnSaveCard.click(function() {
-		var cardDescription = $textareaEditCard.val();
-		if (cardDescription !== '') {
-			$.ajax({
-				url: baseUrl + '/card',
-				method: 'POST',
-				data: {
-					name: cardDescription,
-					bootcamp_kanban_column_id: self.id
-				},
-				success: function(response){
-					
-				}
-			});
-			$textareaAddCard.val('');
-			return true;
-		};
-		showAlert('Podaj treść karty', 'danger', 3000);
-		return false;
-	});
+// 	$btnSaveCard.click(function() {
+// 		var cardNewDescription = $textareaEditCard.val();
+// 		if (cardNewDescription !== '') {
+// 			cardObj.updateCard(cardNewDescription, function(){
+// 				$modalCardContainer.remove()
+// 			});
+// 			return true;
+// 		};
+// 		showAlert('Podaj treść karty', 'danger', 3000);
+// 		return false;
+// 	});
+// 	$btnCancel.click(function() {
+// 		$modalCardContainer.remove()
+// 	});
 
-	$textareaEditCard.on('keydown', function(event) {
-		if (event.keyCode === 13 && !event.shiftKey) {
-			$btnSaveCard.click();
-		}
-	});
+// 	$textareaEditCard.on('keydown', function(event) {
+// 		if (event.keyCode === 13 && !event.shiftKey) {
+// 			$btnSaveCard.click();
+// 			event.preventDefault();
+// 		}
+// 	});
+// 	$(document).on('keydown', function(event) {
+// 		if (event.keyCode === 27) $btnCancel.click();
+// 	});
 
-	$.append.$tempCard;
-	return $textareaEditCard.val();
-};
-
-
+// 	$modalCardContainer.append($modalCard);
+// 	$modalCard.append($textareaEditCard)
+// 		.append($btnCancel)
+// 		.append($btnSaveCard);
 	
+// 	$('body').append($modalCardContainer);
+// 	$modalCardContainer.show();
+// 	$textareaEditCard.focus();
+// };

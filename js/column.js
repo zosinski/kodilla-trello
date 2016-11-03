@@ -8,45 +8,40 @@ function Column(id, name, backgroundColor) {
 	this.backgroundColor = backgroundColor || 'white';
 	this.$element = createColumn();
 	function createColumn() {
-		var $column = $('<li>').addClass('column').attr('id', id);
-		var $columnTitle = $('<h2>').addClass('column-title').text(self.name);
-		var $columnId = $('<div>').addClass('id').text(self.id);
-		// var $columnContainer = $('<div>').addClass('column-container');
-		var $columnCardList = $('<ul>').addClass('column-card-list');
-		var $columnNav = $('<div>').addClass('nav-column');
-		var $btnColumnDelete = $('<button>').addClass('btn btn-delete').text('x');
-		var $columnColorPicker = $('<input>').addClass('btn color-picker').attr('type', 'color');
-		var $pseudoCard = $('<li>').addClass('pseudo-card');
-		// var $inputAddCard = $('<input>').addClass('input-add-card')
-		// 	.attr('placeholder', 'Dodaj kartę...');
-		var $textareaAddCard = $('<textarea>').addClass('textarea-add-card')
+		const $column = $('<li>').addClass('column').attr('id', id);
+		const $columnTitle = $('<h2>').addClass('column-title').text(name);
+		const $columnId = $('<div>').addClass('id').text(id);
+		const $columnCardList = $('<ul>').addClass('column-card-list');
+		const $columnNav = $('<div>').addClass('nav-column');
+		const $btnColumnDelete = $('<button>').addClass('btn btn-delete').text('x');
+		// const $columnColorPicker = $('<input>').addClass('btn color-picker').attr('type', 'color');
+		const $pseudoCard = $('<li>').addClass('pseudo-card');
+		const $textareaAddCard = $('<textarea>').addClass('textarea-add-card')
 			.attr('placeholder', 'Dodaj kartę...')
 			.attr('rows', 2)
-			.attr('cols', 34)
 			.attr('wrap', 'soft');
-		var $btnAddCard = $('<button>').addClass('btn btn-add-card').text(' + ');
+		const $btnAddCard = $('<button>').addClass('btn btn-add-card').text(' + ');
 
-		$btnColumnDelete.click(function() {
-			self.removeColumn();
-		});
+		$btnColumnDelete.click( () => self.removeColumn() );
 	
 
-		$btnAddCard.click(function() {
-			// var cardDescription = $inputAddCard.val();
-			var cardDescription = $textareaAddCard.val();
+		$btnAddCard.click( () => {
+			const cardDescription = $textareaAddCard.val();
+			const data = {
+						name: cardDescription,
+						bootcamp_kanban_column_id: self.id
+					};
+			console.log(data);
 			if (cardDescription !== '') {
 				$.ajax({
 					url: baseUrl + '/card',
 					method: 'POST',
-					data: {
-						name: cardDescription,
-						bootcamp_kanban_column_id: self.id
-					},
-					success: function(response){
-						self.addCard(new Card( response.id, cardDescription ));
+					data: data,
+					success: response => {
+						self.addCard(new Card( response.id, cardDescription, self.id ));
 					}
 				});
-				// $inputAddCard.val('');
+				console.log('$textareaAddCard: ', $textareaAddCard)
 				$textareaAddCard.val('');
 				return true;
 			};
@@ -55,26 +50,27 @@ function Column(id, name, backgroundColor) {
 		});
 
 		// $inputAddCard.on('keydown', function(event) {
-		$textareaAddCard.on('keydown', function(event) {
+		$textareaAddCard.on('keydown', event => {
 			if (event.keyCode === 13 && !event.shiftKey) {
 				$btnAddCard.click();
+				event.preventDefault();
 			}
 		});
 
-		$columnColorPicker.on('change', function(event) {
-			this.backgroundColor = $columnColor.val();
-			self.$element.css('background-color', this.backgroundColor);
-		});
+		// $columnColorPicker.on('change', function(event) {
+		// 	this.backgroundColor = $columnColor.val();
+		// 	self.$element.css('background-color', this.backgroundColor);
+		// });
 
-		$columnNav.append($columnColorPicker).append($btnColumnDelete);
-		// $pseudoCard.append($inputAddCard).append($btnAddCard);
+		// $columnNav.append($columnColorPicker).append($btnColumnDelete);
+		$columnNav.append($btnColumnDelete);
 		$pseudoCard.append($textareaAddCard).append($btnAddCard);
 		$column.append($columnTitle)
 			.append($columnId)
 			.append($columnNav)
 			.append($pseudoCard)
 			.append($columnCardList);
-		// $columnCardList.append($pseudoCard);
+
 		return $column;
 	};
 };
@@ -85,12 +81,12 @@ Column.prototype = {
 	},
 	
 	removeColumn: function() {
-		var self = this;
+		// var self = this;
 		$.ajax({
-			url: baseUrl + '/column/' + self.id,
+			url: baseUrl + '/column/' + this.id,
 			method: 'DELETE',
-			success: function(response){
-				self.$element.remove();
+			success: response => {
+				this.$element.remove();
 			}
 		});
 	}
