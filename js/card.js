@@ -8,19 +8,22 @@ function Card(id, description, parentColumnId) {
 	this.parentColumnId = parentColumnId;
 	this.$element = createCard();
 	function createCard() {
-		var $card = $('<li>').addClass('well card').attr('id',self.id);
-		var $cardId = $('<div>').addClass('id').text(self.id);
-		var $cardDescription = $('<p>').addClass('card-description').text(self.description);
-		var $btnCardEdit = $('<a>').addClass('btn btn-xs btn-primary btn-edit')
+		const $card = $('<li>').addClass('panel panel-default card').attr('id',self.id);
+		const $cardId = $('<div>').addClass('id').text(self.id);
+		const $cardDescription = $('<p>').addClass('panel-body card-description').text(self.description);
+		const $btnCardEdit = $('<a>').addClass('btn btn-xs btn-primary btn-edit')
 			.append($('<i>').addClass('material-icons md-18').text('edit'));
-		var $btnCardDelete = $('<a>').addClass('btn btn-xs btn-delete')
+		const $btnCardDelete = $('<a>').addClass('btn btn-xs btn-delete')
 			.append($('<i>').addClass('material-icons md-18').text('delete'));
 
-		$btnCardDelete.click(function(){
+		$btnCardDelete.click( () => {
 			self.removeCard();
 		});
-		$btnCardEdit.click(function(){
+		$btnCardEdit.click( () => {
 			self.editCard();		
+		});
+		$cardDescription.dblclick( () => {
+			self.editCard();
 		});
 
 		$card.append($btnCardDelete)
@@ -58,13 +61,13 @@ Card.prototype = {
 			url: baseUrl + '/card/' + self.id,
 			method: 'PUT',
 			data: data,
-			success: function() {
+			success: () => {
 				self.description = cardNewDescription;
 				self.$element.find('.card-description').text(cardNewDescription);
 				callback();
 				// self.$element.show();
 			},
-			error: function(response) {
+			error: (response) => {
 				// self.$cardDescription.text(cardNewDescription);
 				// alert(cardNewDescription);
 			}

@@ -18,8 +18,10 @@ $(function(){
 	function initialize() {
 		const dashboard = $('section.main');
 		const header = $('header');
-		const inputAddBoard = $('<input>').addClass('add-board').attr('placeholder', 'Dodaj tablicę...');
-		const btnAddBoard = $('<button>').addClass('btn btn-add-board').text(' + ');
+		// const inputAddBoard = $('<input>').addClass('add-board').attr('placeholder', 'Dodaj tablicę...');
+		const inputAddBoard = $('#input-add-board');
+		// const btnAddBoard = $('<button>').addClass('btn btn-add-board').text(' + ');
+		const btnAddBoard = $('#btn-add-board');
 
 		$.ajax({
 			url: baseUrl + '/board',
@@ -75,7 +77,7 @@ $(function(){
 			});
 		};
 
-		header.append(inputAddBoard).append(btnAddBoard);
+		// header.append(inputAddBoard).append(btnAddBoard);
 		inputAddBoard.focus();
 	}
 
